@@ -25,6 +25,43 @@ class SettingsController {
       })
     }
   }
+
+  async findByUserName(request: Request, response: Response) {
+    const { username } = request.params
+
+    const settingsService = new SettingsService()
+
+    try {
+      const settings = await settingsService.findByUserName(username)
+
+      return response.status(200).json(settings)
+    } catch (error) {
+      console.log(error)
+
+      return response.status(500).json({
+        message: error.message,
+      })
+    }
+  }
+
+  async update(request: Request, response: Response) {
+    const { username } = request.params
+    const { chat } = request.body
+
+    const settingsService = new SettingsService()
+
+    try {
+      await settingsService.update(username, chat)
+
+      return response.status(204).send()
+    } catch (error) {
+      console.log(error)
+
+      return response.status(500).json({
+        message: error.message,
+      })
+    }
+  }
 }
 
 export { SettingsController }
